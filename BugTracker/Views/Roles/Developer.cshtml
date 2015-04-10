@@ -1,0 +1,49 @@
+﻿@model  BugTracker.Models.ListViewModel
+
+@{
+    ViewBag.Title = "Developer Account Administration";
+}
+
+<h2>Developer Accounts</h2>
+<hr />
+@using (Html.BeginForm("DRemoveFromRole", "Roles"))
+{
+    @Html.AntiForgeryToken()
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-4" style="width:100%">
+                <h2>Users in Role - Developer</h2>
+                @Html.ListBoxFor(model => model.SelectedroleUsers, Model.zUsers, new { @class = "form-control", size = 5 })
+                @Html.Hidden("RoleName", "Developer")
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <input type="submit" value="Remove user(s) from Admin Role" />
+            </div>
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm("DAddToRole", "Roles"))
+{
+    @Html.AntiForgeryToken()
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-4" style="width:100%">
+                <h2>Other Users</h2>
+                @Html.ListBoxFor(model => model.SelectednonUsers, Model.otherUsers, new { @class = "form-control", size = 5 })
+                @Html.Hidden("RoleName", "Developer")
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <input type="submit" value="Add user(s) to Admin Role" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to Roles", "Index")
+</div>

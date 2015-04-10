@@ -1,0 +1,20 @@
+﻿@{
+    ViewBag.Title = "Confirm Email";
+}
+
+<h2>Your Email has been confirmed</h2>
+<div>
+    <p class="well">
+        Thank you for confirming your email
+    </p>
+    @if (Request.IsAuthenticated)
+    {
+        <button>@Html.ActionLink("Go to Home", "Index", "Home")</button>
+    }
+    else
+    {
+        <button>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</button>
+        <button>@Html.ActionLink("Go to Home", "Index", "Home")</button>
+    }
+
+</div>

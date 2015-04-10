@@ -1,0 +1,138 @@
+﻿@model PagedList.IPagedList<BugTracker.Models.Ticket>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Tickets<a class="pull-right" title="Create New Ticket" type="button" href="/Tickets/Create"><i class="fa fa-plus-square"></i></a></h2>
+
+@using (Html.BeginForm("Index", "Tickets", FormMethod.Get))
+{ 
+    <div class="row">
+        <div class="col-md-8">
+            <div class="row well" style="margin-left:20px">
+                <div class="col-md-6">
+                    Catagories: @Html.DropDownList("myFilter", null, "--No selection--", htmlAttributes: new { @class = "form-control" })
+                    Type: @Html.DropDownList("myFilter2", null, "--No selection--", htmlAttributes: new { @class = "form-control" })
+                    Status: @Html.DropDownList("myFilter3", null, "--No selection--", htmlAttributes: new { @class = "form-control" })
+                </div>
+                @if (User.IsInRole("Developer"))
+                {
+                    <div class="col-md-6">
+                        Priority: @Html.DropDownList("myFilter4", null, "--No selection--", htmlAttributes: new { @class = "form-control" })
+                        Owner: @Html.DropDownList("myFilter5", null, "--No selection--", htmlAttributes: new { @class = "form-control" })
+                        Assignment: @Html.DropDownList("myFilter6", null, "--No selection--", htmlAttributes: new { @class = "form-control" })
+                    </div>
+                }
+                <div class="row" style="text-align:center">
+                    <input style="margin:10px" type="submit" value="Apply Filter" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 pull-right">
+            <p class="pull-right">
+                @Html.TextBox("SearchString")
+                <input type="submit" value="Search" />
+            </p>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <table class="table table-striped table-bordered">
+            <tr>
+                <th>
+                    @Html.ActionLink("Title", "Index", new { sortOrder = ViewBag.TitleSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th>
+                    @Html.ActionLink("Catagory", "Index", new { sortOrder = ViewBag.PNameSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th>
+                    @Html.ActionLink("Type", "Index", new { sortOrder = ViewBag.TtypeTSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th>
+                    @Html.ActionLink("Created By", "Index", new { sortOrder = ViewBag.OwnerSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th>
+                    @Html.ActionLink("Created", "Index", new { sortOrder = ViewBag.CreatedSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th>
+                    @Html.ActionLink("Updated", "Index", new { sortOrder = ViewBag.UpdatedSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                <th>
+                    @Html.ActionLink("Status", "Index", new { sortOrder = ViewBag.TstatusSortParm, currentFilter = ViewBag.CurrentFilter })
+                </th>
+                @if (User.IsInRole("Project Manager"))
+                {
+                    <th>
+                        @Html.ActionLink("Priority", "Index", new { sortOrder = ViewBag.TprioritySortParm, currentFilter = ViewBag.CurrentFilter })
+                    </th>
+                    <th>
+                        @Html.ActionLink("Assigned Developer", "Index", new { sortOrder = ViewBag.AssigneduserSortParm, currentFilter = ViewBag.CurrentFilter })
+                    </th>
+                }
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Project.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TicketType.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.OwnerUser.DispalyName)
+                    </td>
+                    <td>
+                        @{string dcreated = String.Format("{0:d}", item.Created); }
+                        @Html.DisplayFor(modelItem => dcreated)
+                    </td>
+                    <td>
+                        @{string dupdated = String.Format("{0:d}", item.Updated); }
+                        @Html.DisplayFor(modelItem => dupdated)
+                    </td>
+                    @*<td>
+                            @item.TicketComments.Count
+                            foreach (var co in item.TicketComments)
+                            {
+                                <p>@co.Comment</p>
+                            }
+                        </td>*@
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TicketStatus.Name)
+                    </td>
+                    @if (User.IsInRole("Project Manager"))
+                    {
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TicketPriority.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.AssignedToUser.DispalyName)
+                        </td>
+                    }
+                    <td>
+                        <a title="Edit" type="button" href="/Tickets/Edit/@item.Id"><i class="fa fa-pencil"></i></a>
+                        <a title="View Ticket" type="button" href="/Tickets/Details/@item.Id"><i class="fa fa-eye"></i></a>
+                        @if(User.IsInRole("Project Manager")) {<a title="Delete" type="button" href="/Tickets/Delete/@item.Id"><i class="fa fa-trash-o"></i></a>}
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            Showing pages @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+        </div>
+        <div class="col-md-3 pull-right dataTables_paginate">
+            @Html.PagedListPager(Model, page => Url.Action("Index",
+                        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+        </div>
+    </div>
+}
+

@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Roles</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            <p>Role</p>
+        </th>
+        <th>
+            <p>Users in the Role</p>
+        </th>
+        <th>
+            <p>Notice</p>
+        </th>
+    </tr>
+
+@foreach (var item in Model) {    
+    <tr>   
+        <td>
+            @switch (item.Name)
+            {
+                case "Admin":
+                    @Html.ActionLink(@item.Name, "AdminAccount", "Roles");
+                    break;
+                case "Project Manager":
+                    @Html.ActionLink(@item.Name, "ProjectManager", "Roles");
+                    break;
+                case "Developer":
+                    @Html.ActionLink(@item.Name, "Developer", "Roles");
+                    break;
+                case "Submitter":
+                    @Html.ActionLink(@item.Name, "Submitter", "Roles");
+                    break;
+                default:
+                    break;                    
+            }            
+        </td>
+        <td>
+            @item.Users.Count
+        </td>
+        <td>
+            @switch (item.Name)
+            {
+                case "Admin":
+                    <p>
+                        Click on the Admin role to access the Admin account 
+                        and add or remove users from that account.
+                    </p>
+                        break;
+                case "Project Manager":
+                    <p>
+                        Click on the Project Manager role to access the Project Manager account
+                        and add or remove users from that account.
+                    </p>
+                        break;
+                case "Developer":
+                    <p>
+                        Click on the Developer role to access the Developer account
+                        and add or remove users from that account
+                    </p>
+                        break;
+                case "Submitter":
+                    <p>
+                        This is the base user role and every user has this role. You may not add or 
+                        remove users to or from this account. Click on the Submitter role to view all 
+                        the users that are registered.
+                    </p>
+                        break;
+                default:
+                        break;
+            }
+        </td>
+    </tr>
+}
+
+</table>

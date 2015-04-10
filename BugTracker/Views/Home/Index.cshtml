@@ -1,0 +1,127 @@
+﻿@using BugTracker.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Home Page";
+}
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="jumbotron">
+        <h1 class="text-center">Welcome To Tick Tracker</h1>        
+    </div>
+        <div class="well" style="height:300px">
+            <div class="col-md-1"></div>
+            <div class="col-md-4">
+                <img src="~/img/BugTrackericon.png" style="width:100%; border-radius:20px" />
+            </div>
+            <div class="col-md-1"></div>
+            <div class="col-md-5">
+                <p class="lead">
+                    Now that you have signed in to your account, you may create tickets and communicate with Developers. Please use the side menu bar to
+                    navigate the web software. If you want to read more about Tick Tracker, click the button below.
+                </p>
+                <p><a href="/Home/About" class="btn btn-primary btn-lg">About Tick Tracker</a></p>
+            </div>
+        </div>    
+}
+else
+{
+<div class="jumbotron">    
+    <h1>Welcome To Tick Tracker</h1>
+    <p class="lead">If you're a returning user, use your registered email and password to login. If you're new to this site, you can register an account for free.</p>    
+    <p>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink", @class = "btn btn-primary btn-lg" })</p>
+</div>
+
+
+<div class="container">    
+    <div class="row">
+        <div class="col-md-4">
+            <h2>Log in</h2>
+            @using (Html.BeginForm("Index", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <hr />
+                <div class="well">
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Log-in" class="btn btn-default pull-right" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <p>Email Address</p>
+                        <div class="col-md-12">
+                            <p>@Html.TextBoxFor(m => m.Email, new { @class = "form-control" })</p>
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <p>Password</p>
+                        <div class="col-md-12">
+                            <p>@Html.PasswordFor(m => m.Password, new { @class = "form-control" })</p>
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-12">
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(m => m.RememberMe)
+                                @Html.LabelFor(m => m.RememberMe)
+                            </div>
+                        </div>
+                    </div>
+                    <p>
+                        @Html.ActionLink("Forgot your password?", "ForgotPassword")
+                    </p>
+                </div>
+            }                        
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-5">
+            <div class="row">
+                <h2>Use Social Media to login</h2>
+                <hr />
+                @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+            </div>
+            <div class="row">
+                <h2>Login as a Demo-User</h2>
+                <hr />
+                @using (Html.BeginForm("GuestLogin", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Guest Log-in" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+                @using (Html.BeginForm("PMGuestLogin", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Project Manager" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+                @using (Html.BeginForm("DGuestLogin", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Developer" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+                @using (Html.BeginForm("SGuestLogin", "Home", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Submitter" class="btn btn-default" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+}

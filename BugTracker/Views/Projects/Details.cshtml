@@ -1,0 +1,53 @@
+﻿@model BugTracker.Models.PListViewModel
+
+@{
+    ViewBag.Title = "Project Assignment";
+}
+
+<h2>Project Assignment</h2>
+
+<div>
+    <h4>Project Assignment for "@Model.Title.Name"</h4>
+    <hr />
+@using (Html.BeginForm("UnassignFromProject", "Projects"))
+{
+    @Html.AntiForgeryToken()
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-4" style="width:100%">
+                <h2>Users on the Project</h2>
+                @Html.ListBoxFor(model => model.SelectedProjectUsers, Model.zUsers, new { @class = "form-control", size = 5 })
+                @Html.Hidden("Projectid", @Model.Title.Id)                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <input type="submit" value="Unassign user(s) from Project" />
+            </div>
+        </div>
+    </div>
+}
+@using (Html.BeginForm("AssignToProject", "Projects"))
+{
+    @Html.AntiForgeryToken()
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-4" style="width:100%">
+                <h2>Other Users</h2>
+                @Html.ListBoxFor(model => model.SelectednonPUsers, Model.otherUsers, new { @class = "form-control", size = 5 })
+                @Html.Hidden("Projectid", @Model.Title.Id)                
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <input type="submit" value="Assign User(s) to Project" />
+            </div>
+        </div>
+    </div>
+}
+</div>
+
+<div>
+    @Html.ActionLink("Back to Projects", "Index")
+</div>
+

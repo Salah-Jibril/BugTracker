@@ -1,0 +1,46 @@
+﻿@model BugTracker.Models.userListViewModel
+@{
+    ViewBag.Title = "Submitter";
+}
+
+<h2>Roles</h2>
+
+<table class="table">
+     
+        <tr>
+            <th id="last">
+                <p>Last Name</p>
+            </th>
+            <th id="first">
+                <p>First Name</p>
+            </th>
+            <th id="number">
+                <p>Number of user's roles</p>
+            </th>
+            <th id="role">
+                <p>User's current roles</p>
+            </th>      
+        </tr>
+@for (int i = 0; i < Model.Person.Count; i++)
+{
+    <tr>
+            <td id="last">
+                @Model.Person[i].LastName
+            </td>
+            <td id="first">
+                @Model.Person[i].FirstName
+            </td>
+            <td id="number">
+                @Model.Person[i].Roles.Count
+            </td>
+            <td id="role">
+                @Model.userRoles[i]
+            </td>
+                            
+    </tr>
+}
+</table>
+
+<div>
+    @Html.ActionLink("Back to Roles", "Index")
+</div>

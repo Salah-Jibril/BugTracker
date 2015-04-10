@@ -1,0 +1,39 @@
+﻿@model IEnumerable<BugTracker.Models.TicketNotification>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Ticket Notifications</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Ticket.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Notice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Read)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Ticket.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Notice)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Read)
+        </td>
+        <td>
+            @Html.ActionLink("Create", "Create", new { id = item.Id }) 
+        </td>
+    </tr>
+}
+
+</table>

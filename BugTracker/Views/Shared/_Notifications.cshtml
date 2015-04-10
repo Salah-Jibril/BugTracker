@@ -1,0 +1,21 @@
+﻿@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+    <div>
+        <button title="Notifications" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+            <i class="fa fa-envelope fa-2x"></i> <span class="badge" style="font:16;color: green; background-color:white">@ViewBag.Notifications.Count</span>
+        </button>
+        <ul class="dropdown-menu pre-scrollable pull-right" role="menu" aria-labelledby="dropdownMenu1" style="list-style-type:none; width:300px; border-radius:20px; overflow-x:hidden">
+            @if(User.IsInRole("Developer")) {<li >@Html.ActionLink("All Notifications", "Index", "TicketNotifications")</li>}
+            @for (int i = 0; i < @ViewBag.Notifications.Count; i++)
+            {
+                <li class="well">
+                    <p><a href="/Tickets/Details/@ViewBag.Notifications.TicketId[i]" style="color:black">@ViewBag.Notifications.Notifications[i]</a></p>
+                </li>
+            }            
+        </ul>
+    </div>
+    }
+}
